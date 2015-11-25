@@ -18,40 +18,51 @@ TitleBar::TitleBar(QWidget *parent, MainWindow *m)
     // create layout
     layout = new QHBoxLayout(this);
 
+    // create blank expanding widgt
+    QWidget *expand = new QWidget;
+    expand->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    layout->addWidget(expand);
+
+    // create minimize button
+    minimizeButton = new QPushButton("Minimize", this);
+    minimizeButton->setMaximumSize(minimizeButton->sizeHint());
+
+    layout->addWidget(minimizeButton);
+
     // create exit button
     exitButton = new QPushButton("Exit", this);
     exitButton->setMaximumSize(exitButton->sizeHint());
 
-    layout->addWidget(exitButton, 0, Qt::AlignRight);
+    layout->addWidget(exitButton);
 
-    // create minimize button
-//    minimizeButton = new QPushButton("Minimize", this);
-//    minimizeButton->setMaximumSize(minimizeButton->sizeHint());
-
-//    layout->addWidget(minimizeButton, 0, Qt::AlignRight);
 }
 
 void TitleBar::mousePressEvent(QMouseEvent *event)
 {
-//    if (event->button() == Qt::LeftButton)
-//    {
-//        lastMousePos = event->pos();
-//        moving = true;
-//        qDebug() << event->pos();
-//    }
+    if (event->button() == Qt::LeftButton)
+    {
+        lastMousePos = event->pos();
+        moving = true;
+    }
 }
 
 void TitleBar::mouseMoveEvent(QMouseEvent *event)
 {
-//    if ((event->button() & Qt::LeftButton) && moving) {
-//        QPoint newpos = this->pos() + (event->pos() - lastMousePos);
-//        mainWindow->move(newpos);
-//        qDebug() << "Should move to " << newpos;
-//    }
+    if (moving)
+    {
+        qDebug() << "Mouse moved";
+        QPoint newpos = this->pos() + (event->pos() - lastMousePos);
+        if (newpos != curPos)
+        {
+            posChange = event->pos() - lastMousePos;
+            curPos = newpos;
+            emit moveSignal(newpos);
+        }
+    }
 }
 
 void TitleBar::mouseReleaseEvent(QMouseEvent *event)
 {
-//    if (event->button() == Qt::LeftButton)
-//        moving = false;
+    if (event->button() == Qt::LeftButton)
+        moving = false;
 }

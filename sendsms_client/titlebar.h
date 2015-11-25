@@ -9,21 +9,30 @@
 
 #include "mainwindow.h"
 
+// forward declare mainwindow
+class MainWindow;
 
 class TitleBar : public QWidget
 {
     Q_OBJECT
 
 public:
-    TitleBar(QWidget *parent = 0, MainWindow *m = 0);
     QPushButton *exitButton;
     QPushButton *minimizeButton;
 
+    QPoint posChange;
+
+    TitleBar(QWidget *parent = 0, MainWindow *m = 0);
+
+signals:
+    void moveSignal(QPoint posChange);
 
 private:
     QHBoxLayout *layout;
-    QPoint lastMousePos;
     MainWindow *mainWindow;
+
+    QPoint curPos;
+    QPoint lastMousePos;
     bool moving;
 
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;

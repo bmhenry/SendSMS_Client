@@ -42,7 +42,10 @@ MainWindow::MainWindow()
      *  Window Buttons:
      *                  */
     // create custom bar for window operations
-    titlebar = new TitleBar(w, this);
+    titlebar = new TitleBar(w);
+    w->connect(titlebar->exitButton, SIGNAL(released()), this, SLOT(exit()));
+    w->connect(titlebar->minimizeButton, SIGNAL(released()), this, SLOT(minimize()));
+    w->connect(titlebar, SIGNAL(moveSignal(QPoint)), this, SLOT(windowMove(QPoint)));
 
     mainLayout->addWidget(titlebar);
 
@@ -109,9 +112,19 @@ void MainWindow::about()
 
 }
 
+void MainWindow::windowMove(QPoint posChange)
+{
+    this->move(this->pos() + posChange);
+}
+
 void MainWindow::exit()
 {
     qApp->exit(EXIT_SUCCESS);
+}
+
+void MainWindow::minimize()
+{
+    //this->setWindowState(Qt::WindowMinimized);
 }
 
 void MainWindow::createActions()

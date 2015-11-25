@@ -10,6 +10,8 @@
 
 #include "titlebar.h"
 
+// forward declare titlebar
+class TitleBar;
 
 class MainWindow: public QMainWindow
 {
@@ -26,6 +28,8 @@ private slots:
     void disconnect();
     void about();
     void exit();
+    void minimize();
+    void windowMove(QPoint posChange);
 
 private:
     void createActions();
