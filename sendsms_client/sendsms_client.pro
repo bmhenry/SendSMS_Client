@@ -20,3 +20,6 @@ HEADERS  += mainwindow.h \
     titlebar.h
 
 FORMS    +=
+
+win32:RC_ICONS = sms.ico
+

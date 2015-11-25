@@ -17,13 +17,13 @@ CXXFLAGS      = -pipe -fno-keep-inline-dllexport -O2 -frtti -Wall -Wextra -fexce
 INCPATH       = -I..\sendsms_client -I. -IC:\Qt\Static\5.5.0\include -IC:\Qt\Static\5.5.0\include\QtWidgets -IC:\Qt\Static\5.5.0\include\QtGui -IC:\Qt\Static\5.5.0\include\QtCore -Irelease -IC:\Qt\Static\5.5.0\mkspecs\win32-g++ 
 LINKER      =        g++
 LFLAGS        =        -static -static-libgcc -Wl,-s -Wl,-subsystem,windows -mthreads
-LIBS        =        -lmingw32 -LC:/Qt/Static/5.5.0/lib -lqtmain -lQt5Widgets -LC:/Qt/Static/5.5.0/plugins/platforms -lqwindows -lwinspool -lshlwapi -lQt5PlatformSupport -lqtfreetype -LC:/Qt/Static/5.5.0/plugins/imageformats -lqdds -lqicns -lqico -lqjp2 -lqmng -lqtga -lqtiff -lqwbmp -lqwebp -lQt5Gui -lcomdlg32 -loleaut32 -limm32 -lwinmm -lglu32 -lopengl32 -lgdi32 -lqtharfbuzzng -lQt5Core -lole32 -luuid -lws2_32 -ladvapi32 -lshell32 -luser32 -lkernel32 -lmpr -lqtpcre 
+LIBS        =        -lmingw32 -LC:/Qt/Static/5.5.0/lib -lqtmain -lQt5Widgets -LC:/Qt/Static/5.5.0/plugins/platforms -lqwindows -lwinspool -lshlwapi -lQt5PlatformSupport -lqtfreetype -LC:/Qt/Static/5.5.0/plugins/imageformats -lqdds -lqicns -lqico -lqjp2 -lqmng -lqtga -lqtiff -lqwbmp -lqwebp -lQt5Gui -lcomdlg32 -loleaut32 -limm32 -lwinmm -lglu32 -lopengl32 -lgdi32 -lqtharfbuzzng -lQt5Core -lole32 -luuid -lws2_32 -ladvapi32 -lshell32 -luser32 -lkernel32 -lmpr -lqtpcre release\sendsms_client_resource_res.o 
 QMAKE         = C:\Qt\Static\5.5.0\bin\qmake.exe
 IDC           = idc
 IDL           = midl
 ZIP           = zip -r -9
 DEF_FILE      = 
-RES_FILE      = 
+RES_FILE      = release\sendsms_client_resource_res.o
 COPY          = copy /y
 SED           = $(QMAKE) -install sed
 COPY_FILE     = copy /y
@@ -86,8 +86,11 @@ DESTDIR_TARGET = release\sendsms_client.exe
 first: all
 all: Makefile.Release  $(DESTDIR_TARGET)
 
-$(DESTDIR_TARGET): C:/Qt/Static/5.5.0/lib/libQt5Widgets.a C:/Qt/Static/5.5.0/lib/libQt5Gui.a C:/Qt/Static/5.5.0/lib/libQt5Core.a $(OBJECTS) 
+$(DESTDIR_TARGET): C:/Qt/Static/5.5.0/lib/libQt5Widgets.a C:/Qt/Static/5.5.0/lib/libQt5Gui.a C:/Qt/Static/5.5.0/lib/libQt5Core.a $(OBJECTS) release/sendsms_client_resource_res.o
 	$(LINKER) $(LFLAGS) -o $(DESTDIR_TARGET) $(OBJECTS)  $(LIBS)
+
+release/sendsms_client_resource_res.o: sendsms_client_resource.rc
+	windres -i sendsms_client_resource.rc -o release\sendsms_client_resource_res.o --include-dir=. $(DEFINES)
 
 qmake: FORCE
 	@$(QMAKE) -spec win32-g++ "CONFIG+=release" -o Makefile.Release ..\sendsms_client\sendsms_client.pro
@@ -99,6 +102,7 @@ dist:
 
 clean: compiler_clean 
 	-$(DEL_FILE) release\main.o release\mainwindow.o release\titlebar.o release\sendsms_client_plugin_import.o release\moc_mainwindow.o release\moc_titlebar.o
+	-$(DEL_FILE) release\sendsms_client_resource_res.o
 
 distclean: clean 
 	-$(DEL_FILE) D:\Docs\code\SendSMS\client\build-sendsms_client-Qt_5_5_Static_MinGW_32bit-Release\sendsms_client_plugin_import.cpp

@@ -19,7 +19,7 @@
 MainWindow::MainWindow()
 {
     // Remove default frame and window buttons:
-    this->setWindowFlags(Qt::Popup);
+    this->setWindowFlags(Qt::FramelessWindowHint);
 
     // center window on screen
     QRect screenGeometry = QApplication::desktop()->screenGeometry();
@@ -124,7 +124,7 @@ void MainWindow::exit()
 
 void MainWindow::minimize()
 {
-    //this->setWindowState(Qt::WindowMinimized);
+    this->showMinimized();
 }
 
 void MainWindow::createActions()

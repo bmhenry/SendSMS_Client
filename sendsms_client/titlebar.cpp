@@ -50,7 +50,6 @@ void TitleBar::mouseMoveEvent(QMouseEvent *event)
 {
     if (moving)
     {
-        qDebug() << "Mouse moved";
         QPoint newpos = this->pos() + (event->pos() - lastMousePos);
         if (newpos != curPos)
         {
