@@ -259,7 +259,7 @@ debug/moc_mainwindow.cpp: C:/Qt/5.5/mingw492_32/include/QtGui/QCloseEvent \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/qabstractbutton.h \
 		../sendsms_client/mainwindow.h \
 		../sendsms_client/mainwindow.h
-	C:\Qt\5.5\mingw492_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 -IC:/Qt/5.5/mingw492_32/mkspecs/win32-g++ -ID:/Docs/code/SendSMS/client/sendsms_client -IC:/Qt/5.5/mingw492_32/include -IC:/Qt/5.5/mingw492_32/include/QtWidgets -IC:/Qt/5.5/mingw492_32/include/QtGui -IC:/Qt/5.5/mingw492_32/include/QtANGLE -IC:/Qt/5.5/mingw492_32/include/QtCore -I. ..\sendsms_client\mainwindow.h -o debug\moc_mainwindow.cpp
+	C:\Qt\5.5\mingw492_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 -IC:/Qt/5.5/mingw492_32/mkspecs/win32-g++ -IC:/Users/Brandon/Documents/Docs/code/SendSMS/SendSMS_Client/sendsms_client -IC:/Qt/5.5/mingw492_32/include -IC:/Qt/5.5/mingw492_32/include/QtWidgets -IC:/Qt/5.5/mingw492_32/include/QtGui -IC:/Qt/5.5/mingw492_32/include/QtANGLE -IC:/Qt/5.5/mingw492_32/include/QtCore -I. ..\sendsms_client\mainwindow.h -o debug\moc_mainwindow.cpp
 
 debug/moc_titlebar.cpp: C:/Qt/5.5/mingw492_32/include/QtWidgets/QHBoxLayout \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/qboxlayout.h \
@@ -402,7 +402,7 @@ debug/moc_titlebar.cpp: C:/Qt/5.5/mingw492_32/include/QtWidgets/QHBoxLayout \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/qlistwidget.h \
 		../sendsms_client/titlebar.h \
 		../sendsms_client/titlebar.h
-	C:\Qt\5.5\mingw492_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 -IC:/Qt/5.5/mingw492_32/mkspecs/win32-g++ -ID:/Docs/code/SendSMS/client/sendsms_client -IC:/Qt/5.5/mingw492_32/include -IC:/Qt/5.5/mingw492_32/include/QtWidgets -IC:/Qt/5.5/mingw492_32/include/QtGui -IC:/Qt/5.5/mingw492_32/include/QtANGLE -IC:/Qt/5.5/mingw492_32/include/QtCore -I. ..\sendsms_client\titlebar.h -o debug\moc_titlebar.cpp
+	C:\Qt\5.5\mingw492_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 -IC:/Qt/5.5/mingw492_32/mkspecs/win32-g++ -IC:/Users/Brandon/Documents/Docs/code/SendSMS/SendSMS_Client/sendsms_client -IC:/Qt/5.5/mingw492_32/include -IC:/Qt/5.5/mingw492_32/include/QtWidgets -IC:/Qt/5.5/mingw492_32/include/QtGui -IC:/Qt/5.5/mingw492_32/include/QtANGLE -IC:/Qt/5.5/mingw492_32/include/QtCore -I. ..\sendsms_client\titlebar.h -o debug\moc_titlebar.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:

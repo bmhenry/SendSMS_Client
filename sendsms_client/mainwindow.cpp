@@ -21,6 +21,9 @@ MainWindow::MainWindow()
     // Remove default frame and window buttons:
     this->setWindowFlags(Qt::FramelessWindowHint);
 
+    // set window icon
+    this->setWindowIcon(QIcon("./sms.ico"));
+
     // center window on screen
     QRect screenGeometry = QApplication::desktop()->screenGeometry();
     int x = (screenGeometry.width() - this->width()) / 2;

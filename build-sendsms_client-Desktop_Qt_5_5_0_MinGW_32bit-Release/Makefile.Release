@@ -90,7 +90,7 @@ release/sendsms_client_resource_res.o: sendsms_client_resource.rc
 	windres -i sendsms_client_resource.rc -o release\sendsms_client_resource_res.o --include-dir=. $(DEFINES)
 
 qmake: FORCE
-	@$(QMAKE) -spec win32-g++ "CONFIG+=debug" -o Makefile.Release ..\sendsms_client\sendsms_client.pro
+	@$(QMAKE) -spec win32-g++ -o Makefile.Release ..\sendsms_client\sendsms_client.pro
 
 qmake_all: FORCE
 
