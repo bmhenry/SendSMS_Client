@@ -14,10 +14,14 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    titlebar.cpp
+    titlebar.cpp \
+    threadlist.cpp \
+    threaditem.cpp
 
 HEADERS  += mainwindow.h \
-    titlebar.h
+    titlebar.h \
+    threadlist.h \
+    threaditem.h
 
 FORMS    +=
 

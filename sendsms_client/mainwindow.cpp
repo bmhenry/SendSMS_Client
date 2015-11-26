@@ -62,22 +62,9 @@ MainWindow::MainWindow()
     QHBoxLayout *listLayout = new QHBoxLayout(listContainer);
 
     // List of message threads (individual people or MMS)
-    threadList = new QListWidget;
-
-    // TEST: add an item to the threadlist
-    QListWidgetItem *item = new QListWidgetItem(threadList);
-    QFrame *widget = new QFrame();
-    widget->setStyleSheet(QString("background:black;color:white;border:2px solid blue;"));
-    QVBoxLayout *l = new QVBoxLayout(widget);
-    QLabel *str = new QLabel("Meow.");
-    QLabel *str2 = new QLabel("Test.");
-    l->addWidget(str);
-    l->addWidget(str2);
-    item->setSizeHint(widget->minimumSizeHint());
-
-    threadList->addItem("Hello!");
-    threadList->addItem(item);
-    threadList->setItemWidget(item, widget);
+    threadList = new ThreadList();
+    threadList->addItem("Title A", "text A");
+    threadList->addItem("Title B", "test B");
 
     listLayout->addWidget(threadList);
 

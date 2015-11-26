@@ -9,6 +9,7 @@
 #include <QWidget>
 
 #include "titlebar.h"
+#include "threadlist.h"
 
 // forward declare titlebar
 class TitleBar;
@@ -43,9 +44,8 @@ private:
     QAction *aboutAct;
     QAction *exitAct;
 
-    //QListView *threadList;
-    //QListView *messageList;
-    QListWidget *threadList;
+    ThreadList *threadList;
+    //QListWidget *threadList;
     QListWidget *messageList;
 };
 

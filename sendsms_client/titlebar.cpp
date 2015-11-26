@@ -21,6 +21,7 @@ TitleBar::TitleBar(QWidget *parent, MainWindow *m)
     // create blank expanding widgt
     QWidget *expand = new QWidget;
     expand->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    expand->setStyleSheet("background:transparent;");
     layout->addWidget(expand);
 
     // create minimize button

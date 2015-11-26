@@ -61,7 +61,7 @@ void ThreadItem::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
 }
 
 const QMetaObject ThreadItem::staticMetaObject = {
-    { &QWidget::staticMetaObject, qt_meta_stringdata_ThreadItem.data,
+    { &QFrame::staticMetaObject, qt_meta_stringdata_ThreadItem.data,
       qt_meta_data_ThreadItem,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
 };
 
@@ -76,12 +76,12 @@ void *ThreadItem::qt_metacast(const char *_clname)
     if (!_clname) return Q_NULLPTR;
     if (!strcmp(_clname, qt_meta_stringdata_ThreadItem.stringdata0))
         return static_cast<void*>(const_cast< ThreadItem*>(this));
-    return QWidget::qt_metacast(_clname);
+    return QFrame::qt_metacast(_clname);
 }
 
 int ThreadItem::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = QWidget::qt_metacall(_c, _id, _a);
+    _id = QFrame::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     return _id;
