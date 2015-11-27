@@ -7,21 +7,14 @@
 #include <QList>
 
 
-struct ItemStorage
-{
-    QString *title;
-    QString *text;
-};
-
-class ThreadList : public QWidget
+class ThreadList : public QFrame
 {
 public:
-    ThreadList();
+    ThreadList(QWidget *parent = 0);
 
     void addItem(QString title, QString text);
 
 private:
-    bool colorToggle;
     QListWidget *list;
 };
 

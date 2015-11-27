@@ -1,18 +1,17 @@
 #include "threaditem.h"
 
-ThreadItem::ThreadItem(QString title, QString text, bool colorToggle, QWidget *parent)
+ThreadItem::ThreadItem(QString title, QString text, QWidget *parent)
     : QFrame(parent)
 {
-    if (colorToggle)
-        this->setStyleSheet(QString(".ThreadItem{background:#aaaaaa;border:1px solid #888888;}"));
-    else
-        this->setStyleSheet(QString(".ThreadItem{background:#9fb9f9;border:1px solid #888888;}"));
-
     QVBoxLayout *l = new QVBoxLayout(this);
+
     titleLabel = new QLabel(title);
     titleLabel->setStyleSheet(QString("color:white;"));
+    titleLabel->setFixedWidth(170);
+
     textLabel= new QLabel(text);
     textLabel->setStyleSheet(QString("color:white;"));
+    textLabel->setFixedWidth(170);
 
     l->addWidget(titleLabel);
     l->addWidget(textLabel);

@@ -16,12 +16,18 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     titlebar.cpp \
     threadlist.cpp \
-    threaditem.cpp
+    threaditem.cpp \
+    messageitem.cpp \
+    messagelist.cpp \
+    sendbar.cpp
 
 HEADERS  += mainwindow.h \
     titlebar.h \
     threadlist.h \
-    threaditem.h
+    threaditem.h \
+    messagelist.h \
+    messageitem.h \
+    sendbar.h
 
 FORMS    +=
 

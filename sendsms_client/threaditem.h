@@ -11,7 +11,7 @@ class ThreadItem : public QFrame
     Q_OBJECT
 
 public:
-    ThreadItem(QString title, QString text, bool colorToggle, QWidget *parent = 0);
+    ThreadItem(QString title, QString text, QWidget *parent = 0);
 
     void setTitle(QString title);
     void setText(QString text);

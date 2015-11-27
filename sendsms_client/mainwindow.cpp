@@ -9,17 +9,17 @@
 #include <QVBoxLayout>
 
 #include "mainwindow.h"
-#include "titlebar.h"
 
 #include <QLabel>
 #include <QPushButton>
+#include <QTextEdit>
 
 
 
 MainWindow::MainWindow()
 {
     // Remove default frame and window buttons:
-    this->setWindowFlags(Qt::FramelessWindowHint);
+    //this->setWindowFlags(Qt::FramelessWindowHint);
 
     // set window icon
     this->setWindowIcon(QIcon("./sms.ico"));
@@ -35,7 +35,7 @@ MainWindow::MainWindow()
     setCentralWidget(w);
 
     w->setObjectName("centralWidget");
-    w->setStyleSheet(QString("#centralWidget{border:1px solid black;}"));
+    w->setStyleSheet(QString("#centralWidget{background:#777777;}"));
 
     QVBoxLayout *mainLayout = new QVBoxLayout(w);
     mainLayout->setMargin(0);
@@ -45,13 +45,14 @@ MainWindow::MainWindow()
      *  Window Buttons:
      *                  */
     // create custom bar for window operations
+    /*
     titlebar = new TitleBar(w);
     w->connect(titlebar->exitButton, SIGNAL(released()), this, SLOT(exit()));
     w->connect(titlebar->minimizeButton, SIGNAL(released()), this, SLOT(minimize()));
     w->connect(titlebar, SIGNAL(moveSignal(QPoint)), this, SLOT(windowMove(QPoint)));
 
     mainLayout->addWidget(titlebar);
-
+    */
 
 
     /*
@@ -63,10 +64,31 @@ MainWindow::MainWindow()
 
     // List of message threads (individual people or MMS)
     threadList = new ThreadList();
-    threadList->addItem("Title A", "text A");
-    threadList->addItem("Title B", "test B");
+    threadList->addItem("Person 1", "Hello, this is an automated message from the IRS.");
+    threadList->addItem("Person 2", "Hey, have you burned all of those tax receipts yet?");
+    threadList->addItem("Person 3", "Testing testing.");
 
-    listLayout->addWidget(threadList);
+    listLayout->addWidget(threadList, 1);
+
+    // container for message list and send bar
+    QFrame *messageContainer = new QFrame;
+    QVBoxLayout *mcLayout = new QVBoxLayout(messageContainer);
+    mcLayout->setMargin(0);
+
+    // List for messages in current thread
+    messageList = new MessageList();
+    messageList->addItem("Hello, this is an automated message from the IRS. We would like to inform you that you're very stupid.", "yesterday", MessageList::RECEIVED);
+    messageList->addItem("Lorem ipsum i dunno the rest so this is just a filler.", "today", MessageList::SENT);
+
+    mcLayout->addWidget(messageList);
+
+    // Bar for sending messages
+    sendBar = new SendBar();
+
+    mcLayout->addWidget(sendBar);
+
+
+    listLayout->addWidget(messageContainer, 5);
 
     mainLayout->addWidget(listContainer);
 
@@ -75,7 +97,7 @@ MainWindow::MainWindow()
 
     setWindowTitle(tr("SendSMS"));
     resize(800,400);
-    this->setMinimumSize(400, 400);
+    this->setMinimumSize(500, 300);
 }
 
 

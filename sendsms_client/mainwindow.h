@@ -10,6 +10,8 @@
 
 #include "titlebar.h"
 #include "threadlist.h"
+#include "messagelist.h"
+#include "sendbar.h"
 
 // forward declare titlebar
 class TitleBar;
@@ -45,8 +47,8 @@ private:
     QAction *exitAct;
 
     ThreadList *threadList;
-    //QListWidget *threadList;
-    QListWidget *messageList;
+    MessageList *messageList;
+    SendBar *sendBar;
 };
 
 #endif // MAINWINDOW_H

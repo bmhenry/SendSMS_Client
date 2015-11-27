@@ -1,0 +1,15 @@
+INPUT(
+./debug\main.o
+./debug\mainwindow.o
+./debug\titlebar.o
+./debug\threadlist.o
+./debug\threaditem.o
+./debug\messageitem.o
+./debug\messagelist.o
+./debug\sendbar.o
+./debug\moc_mainwindow.o
+./debug\moc_titlebar.o
+./debug\moc_threaditem.o
+./debug\moc_messagelist.o
+./debug\moc_messageitem.o
+);

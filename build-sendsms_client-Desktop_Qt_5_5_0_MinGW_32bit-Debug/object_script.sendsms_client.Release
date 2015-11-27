@@ -1,0 +1,15 @@
+INPUT(
+./release\main.o
+./release\mainwindow.o
+./release\titlebar.o
+./release\threadlist.o
+./release\threaditem.o
+./release\messageitem.o
+./release\messagelist.o
+./release\sendbar.o
+./release\moc_mainwindow.o
+./release\moc_titlebar.o
+./release\moc_threaditem.o
+./release\moc_messagelist.o
+./release\moc_messageitem.o
+);
