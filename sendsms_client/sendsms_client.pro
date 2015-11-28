@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = sendsms_client
+TARGET = GracefulSMS
 TEMPLATE = app
 
 
@@ -19,7 +19,9 @@ SOURCES += main.cpp\
     threaditem.cpp \
     messageitem.cpp \
     messagelist.cpp \
-    sendbar.cpp
+    sendbar.cpp \
+    fileio.cpp \
+    gracefulsms.cpp
 
 HEADERS  += mainwindow.h \
     titlebar.h \
@@ -27,7 +29,9 @@ HEADERS  += mainwindow.h \
     threaditem.h \
     messagelist.h \
     messageitem.h \
-    sendbar.h
+    sendbar.h \
+    fileio.h \
+    gracefulsms.h
 
 FORMS    +=
 

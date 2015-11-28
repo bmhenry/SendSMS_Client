@@ -5,14 +5,16 @@
 #include <QListWidgetItem>
 #include <QPalette>
 #include <QRect>
-#include <QSize>
-#include <QVBoxLayout>
-
 #include "mainwindow.h"
 
+#include <QSize>
+#include <QVBoxLayout>
 #include <QLabel>
 #include <QPushButton>
 #include <QTextEdit>
+
+#include "gracefulsms.h"
+#include "fileio.h"
 
 
 
@@ -29,6 +31,10 @@ MainWindow::MainWindow()
     int x = (screenGeometry.width() - this->width()) / 2;
     int y = (screenGeometry.height() - this->height()) / 2;
     this->move(x, y);
+
+    // check if this is first run, if so do necessary actions
+    if (is_first_run())
+        first_run();
 
     // create central widget
     QWidget *w = new QWidget;
@@ -95,7 +101,7 @@ MainWindow::MainWindow()
     createActions();
     createMenus();
 
-    setWindowTitle(tr("SendSMS"));
+    setWindowTitle(tr("GracefulSMS"));
     resize(800,400);
     this->setMinimumSize(500, 300);
 }
