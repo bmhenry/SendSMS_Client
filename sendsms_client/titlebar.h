@@ -17,19 +17,20 @@ class TitleBar : public QWidget
     Q_OBJECT
 
 public:
+    TitleBar(QWidget *parent = 0, MainWindow *m = 0);
+
     QPushButton *exitButton;
     QPushButton *minimizeButton;
 
     QPoint posChange;
 
-    TitleBar(QWidget *parent = 0, MainWindow *m = 0);
 
 signals:
     void moveSignal(QPoint posChange);
 
 private:
     QHBoxLayout *layout;
-    MainWindow *mainWindow;
+    MainWindow *mainWindow; // don't delete this
 
     QPoint curPos;
     QPoint lastMousePos;

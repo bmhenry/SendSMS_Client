@@ -37,7 +37,7 @@ MainWindow::MainWindow()
         first_run();
 
     // create central widget
-    QWidget *w = new QWidget;
+    QWidget *w = new QWidget(this);
     setCentralWidget(w);
 
     w->setObjectName("centralWidget");
@@ -69,34 +69,31 @@ MainWindow::MainWindow()
     QHBoxLayout *listLayout = new QHBoxLayout(listContainer);
 
     // List of message threads (individual people or MMS)
-    threadList = new ThreadList();
-    threadList->addItem("Person 1", "Hello, this is an automated message from the IRS.");
-    threadList->addItem("Person 2", "Hey, have you burned all of those tax receipts yet?");
-    threadList->addItem("Person 3", "Testing testing.");
-
+    threadList = new ThreadList(w);
     listLayout->addWidget(threadList, 1);
 
     // container for message list and send bar
-    QFrame *messageContainer = new QFrame;
+    QFrame *messageContainer = new QFrame(w);
     QVBoxLayout *mcLayout = new QVBoxLayout(messageContainer);
     mcLayout->setMargin(0);
 
     // List for messages in current thread
-    messageList = new MessageList();
-    messageList->addItem("Hello, this is an automated message from the IRS. We would like to inform you that you're very stupid.", "yesterday", MessageList::RECEIVED);
-    messageList->addItem("Lorem ipsum i dunno the rest so this is just a filler.", "today", MessageList::SENT);
-
+    messageList = new MessageList(messageContainer);
     mcLayout->addWidget(messageList);
 
     // Bar for sending messages
-    sendBar = new SendBar();
-
+    sendBar = new SendBar(messageContainer);
     mcLayout->addWidget(sendBar);
-
 
     listLayout->addWidget(messageContainer, 5);
 
     mainLayout->addWidget(listContainer);
+
+    /*
+     *  Get SMS
+     */
+    //SMS example = sms_parse(QString("example.sms"));
+    //messageList->addItem(example.message, example.timestamp, example.type);
 
     createActions();
     createMenus();
@@ -105,7 +102,6 @@ MainWindow::MainWindow()
     resize(800,400);
     this->setMinimumSize(500, 300);
 }
-
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {

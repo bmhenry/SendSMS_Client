@@ -21,5 +21,8 @@ bool first_run()
     // create sms directory
     QDir(app_dir()).mkdir(QString("sms"));
 
+    // create example text
+    sms_example();
+
     return true;
 }

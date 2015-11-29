@@ -19,7 +19,7 @@ TitleBar::TitleBar(QWidget *parent, MainWindow *m)
     layout = new QHBoxLayout(this);
 
     // create blank expanding widgt
-    QWidget *expand = new QWidget;
+    QWidget *expand = new QWidget(this);
     expand->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     expand->setStyleSheet("background:transparent;");
     layout->addWidget(expand);

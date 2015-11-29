@@ -37,3 +37,6 @@ FORMS    +=
 
 win32:RC_ICONS = sms.ico
 
+DISTFILES += \
+    sms_format.txt
+

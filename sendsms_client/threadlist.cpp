@@ -9,7 +9,7 @@
 ThreadList::ThreadList(QWidget *parent)
     : QFrame(parent)
 {
-    list = new QListWidget();
+    list = new QListWidget(this);
     list->setMinimumWidth(200);
     list->setStyleSheet(QString(
                             "QListWidget{border:1px solid black; background:#aaaaaa;}"
@@ -29,7 +29,7 @@ void ThreadList::addItem(QString title, QString text)
     QListWidgetItem *item = new QListWidgetItem(list);
 
     // create widget for item
-    ThreadItem *widget = new ThreadItem(title, text);
+    ThreadItem *widget = new ThreadItem(title, text, this);
 
     item->setSizeHint(widget->minimumSizeHint());
 

@@ -9,6 +9,8 @@
 
 class ThreadList : public QFrame
 {
+    Q_OBJECT
+
 public:
     ThreadList(QWidget *parent = 0);
 

@@ -1,0 +1,10 @@
+SMS will be in a text file with the following format
+
+IN means a received message
+OUT is a sent message
+
+(newlines shown will be expected)
+IN
+TIMESTAMP
+FROM(each person in this category separated by 0x1f unit separator)
+MESSAGE[0x1d] (Group separator marks the end)
