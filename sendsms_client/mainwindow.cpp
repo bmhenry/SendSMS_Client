@@ -92,8 +92,13 @@ MainWindow::MainWindow()
     /*
      *  Get SMS
      */
-    //SMS example = sms_parse(QString("example.sms"));
-    //messageList->addItem(example.message, example.timestamp, example.type);
+    QList<SMS> list = sms_parse(QString("example.sms"));
+
+    if (list.length() > 0)
+    {
+        SMS example = sms_parse(QString("example.sms"))[0];
+        messageList->addItem(example.message, example.timestamp, example.type);
+    }
 
     createActions();
     createMenus();

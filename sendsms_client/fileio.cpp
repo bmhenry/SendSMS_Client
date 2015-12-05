@@ -3,6 +3,7 @@
 #include <QTextStream>
 
 
+
 void sms_example()
 {
     QFile file(app_dir() + QString("/sms/example.sms"));
@@ -14,54 +15,49 @@ void sms_example()
     file.close();
 }
 
-SMS sms_parse(QString filename)
+QList<SMS> sms_parse(QString filename)
 {
+    // create list
+    QList<SMS> list;
+
     QFile file(app_dir() + QString("/sms/") + filename);
-    if (!file.open(QFile::ReadOnly))
-        return SMS();
+    if (!file.exists())
+        return list;
+
+    file.open(QFile::ReadOnly);
+
+    // read each line
+    QTextStream stream(file);
+    while (!stream.atEnd())
+    {
+        SMS sms;
+        sms.type = stream.readLine();
+        sms.timestamp = stream.readLine();
+        sms.people = stream.readLine();
+
+        QString line;
+        line = stream.readLine();
+        while (!line.contains(QChar(0x1d)))
+        {
+            sms.message += line;
+            line = stream.readLine();
+        }
+    }
 
     QTextStream in(&file);
 
-    SMS sms;
-    QString check;
-    QString message;
-
-    in >> check;
-
-    if (check == QString("IN"))
-        sms.type = 1;
-    else
-        sms.type = 0;
-
-    in >> sms.timestamp;
-
-    while (1)
-    {
-        in >> check;
-
-        if (check == QString(QChar(0x1f)))
-            break;
-        else
-            sms.people.push_back(check);
-    }
-
-    while (1)
-    {
-        in >> check;
-
-        if (check == QString(QChar(0x1d)))
-            break;
-        else
-            message += check;
-    }
-
-    sms.message = message;
+    // close the file
     file.close();
-
-    return sms;
 }
 
 void sms_append(QString fileName, QString addition)
 {
+    QFile file(fileName);
 
+    file.open(QFile::Append);
+    QTextStream out(&file);
+
+    out << addition;
+
+    file.close();
 }

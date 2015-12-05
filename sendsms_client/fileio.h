@@ -28,7 +28,7 @@ inline bool sms_exists(QString fileName) { return QFile::exists(QString(app_dir(
 void sms_example();
 
 // parse an sms file
-SMS sms_parse(QString filename);
+QList<SMS> sms_parse(QString filename);
 
 // append to sms file
 void sms_append(QString fileName, QString addition);
