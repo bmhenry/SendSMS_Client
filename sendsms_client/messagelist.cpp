@@ -32,3 +32,8 @@ void MessageList::addItem(QString text, QString timestamp, bool type)
 
     list->setItemWidget(item, widget);
 }
+
+void MessageList::clear()
+{
+    list->clear();
+}

@@ -18,6 +18,7 @@ public:
 
     // type 0 = received message, type 1 = sent message
     void addItem(QString text, QString timestamp, bool type);
+    void clear();
 
 private:
     QListWidget *list;

@@ -5,12 +5,13 @@
 #include <QFile>
 #include <QString>
 #include <QList>
+#include <QStringList>
 
 
 typedef struct SMS {
     bool type; // 0 = received (in), 1 = sent (out)
     QString timestamp;
-    QList<QString> people; // other people in the message
+    QString people; // other people in the message
     QString message;
 } SMS;
 
@@ -23,6 +24,9 @@ inline bool is_first_run() { return !QFile::exists(QString(app_dir() + "/gracefu
 
 // check for sms file
 inline bool sms_exists(QString fileName) { return QFile::exists(QString(app_dir() + "/sms/" + fileName)); }
+
+// get list of sms files in the sms directory
+QStringList sms_get_list();
 
 // write an example sms file
 void sms_example();

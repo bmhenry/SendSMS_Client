@@ -14,7 +14,11 @@ class ThreadList : public QFrame
 public:
     ThreadList(QWidget *parent = 0);
 
-    void addItem(QString title, QString text);
+    void addItem(QString filename, QString title, QString text);
+    QString getCurrentFilename();
+
+signals:
+    void selectionChanged(int);
 
 private:
     QListWidget *list;

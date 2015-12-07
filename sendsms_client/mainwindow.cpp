@@ -8,6 +8,7 @@
 #include "mainwindow.h"
 
 #include <QSize>
+#include <QDebug>
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QPushButton>
@@ -71,6 +72,7 @@ MainWindow::MainWindow()
     // List of message threads (individual people or MMS)
     threadList = new ThreadList(w);
     listLayout->addWidget(threadList, 1);
+    w->connect(threadList, SIGNAL(selectionChanged(int)), this, SLOT(threadChanged(int)));
 
     // container for message list and send bar
     QFrame *messageContainer = new QFrame(w);
@@ -90,14 +92,25 @@ MainWindow::MainWindow()
     mainLayout->addWidget(listContainer);
 
     /*
-     *  Get SMS
+     *  Get SMS threads
      */
-    QList<SMS> list = sms_parse(QString("example.sms"));
 
-    if (list.length() > 0)
+    QStringList file_list = sms_get_list();
+
+    for (int file = 0; file < file_list.length(); file++)
     {
-        SMS example = sms_parse(QString("example.sms"))[0];
-        messageList->addItem(example.message, example.timestamp, example.type);
+        QString filename = file_list.at(file);
+        qDebug() << filename;
+        if (filename == "." || filename == "..")
+            continue;
+
+        // open the file and get the first sms for list
+        QList<SMS> sms_list = sms_parse(filename);
+
+        QString people = sms_list.at(0).people;
+        QString first_message = sms_list.at(1).message;
+
+        threadList->addItem(filename, people, first_message);
     }
 
     createActions();
@@ -106,6 +119,23 @@ MainWindow::MainWindow()
     setWindowTitle(tr("GracefulSMS"));
     resize(800,400);
     this->setMinimumSize(500, 300);
+}
+
+void MainWindow::threadChanged(int index)
+{
+    // get the filename at the new index
+    QString filename = threadList->getCurrentFilename();
+
+    // update the message thread
+    QList<SMS> sms_list = sms_parse(filename);
+    messageList->clear();
+
+    // skip the first element, it's the list of all people in the message
+    for (int i = 1; i < sms_list.length(); i++)
+    {
+        SMS sms = sms_list.at(i);
+        messageList->addItem(sms.message, sms.timestamp, sms.type);
+    }
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

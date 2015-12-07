@@ -34,6 +34,8 @@ private slots:
     void minimize();
     void windowMove(QPoint posChange);
 
+    void threadChanged(int);
+
 private:
     void createActions();
     void createMenus();

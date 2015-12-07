@@ -3,7 +3,14 @@ SMS will be in a text file with the following format
 IN means a received message
 OUT is a sent message
 
+First section is structured as an sms, but contains the list of all people in the message
+
 (newlines shown will be expected)
+INFO(this signifies information sms, currently not required)\n
+TIMESTAMP(doesnt matter)\n
+FROM(list of all people)\n
+MESSAGE(doesnt matter)\n
+[0x1d]\n
 IN\n
 TIMESTAMP\n
 FROM(each person in this category separated by [0x1f] unit separator)\n
