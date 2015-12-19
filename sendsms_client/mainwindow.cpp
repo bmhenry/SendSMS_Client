@@ -14,6 +14,9 @@
 #include <QPushButton>
 #include <QTextEdit>
 
+#include <QFile>
+#include <QTextStream>
+
 #include "gracefulsms.h"
 #include "fileio.h"
 
@@ -95,23 +98,30 @@ MainWindow::MainWindow()
      *  Get SMS threads
      */
 
+    // add the about file first
+    threadList->addItem("about.txt", "GracefulSMS", "Hello!");
+
     QStringList file_list = sms_get_list();
 
     for (int file = 0; file < file_list.length(); file++)
     {
         QString filename = file_list.at(file);
+
         qDebug() << filename;
         if (filename == "." || filename == "..")
             continue;
 
-        // open the file and get the first sms for list
-        QList<SMS> sms_list = sms_parse(filename);
-
-        QString people = sms_list.at(0).people;
-        QString first_message = sms_list.at(1).message;
-
-        threadList->addItem(filename, people, first_message);
+        // add the sms to the threadlist
+        threadList->addConversation(filename);
     }
+
+    // select the first thread
+    threadList->setSelection(0);
+
+    // start tcp server
+    server = new Server(this);
+    server->start();
+    w->connect(server, SIGNAL(gotInfo(QString)), this, SLOT(serverInput(QString)));
 
     createActions();
     createMenus();
@@ -121,10 +131,22 @@ MainWindow::MainWindow()
     this->setMinimumSize(500, 300);
 }
 
-void MainWindow::threadChanged(int index)
+void MainWindow::threadChanged(int)
 {
     // get the filename at the new index
     QString filename = threadList->getCurrentFilename();
+
+    // case for the about text
+    if (filename == "about.txt")
+    {
+        QFile about(app_dir() + "/about.txt");
+        about.open(QFile::ReadOnly);
+        messageList->clear();
+        messageList->addItem(QString(about.readAll()), "", SMS::RECEIVED);
+        about.close();
+
+        return;
+    }
 
     // update the message thread
     QList<SMS> sms_list = sms_parse(filename);
@@ -138,10 +160,31 @@ void MainWindow::threadChanged(int index)
     }
 }
 
+void MainWindow::serverInput(QString str)
+{
+    QString result_filename = handle_input(str);
+
+    // if the file that was changed is the same as the one currently viewed...
+    if (result_filename == threadList->getCurrentFilename())
+        // update the displayed messages
+        threadChanged((int) 0);
+    // if the file already exists, then so does the thread. do nothing more
+    // but if the file doesn't exist, create it and add a new thread
+    else if (!sms_exists(result_filename))
+    {
+        QString filename = result_filename;
+
+        qDebug() << filename;
+        if (filename == "." || filename == "..")
+            return;
+
+        threadList->addConversation(filename);
+        threadList->repaint();
+    }
+}
+
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    // i could do custom handling here
-    delete threadList;
     event->ignore();
     exit();
 }
@@ -168,6 +211,8 @@ void MainWindow::windowMove(QPoint posChange)
 
 void MainWindow::exit()
 {
+    server->stop();
+
     qApp->exit(EXIT_SUCCESS);
 }
 

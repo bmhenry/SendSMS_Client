@@ -7,11 +7,13 @@
 #include <QListView>
 #include <QListWidget>
 #include <QWidget>
+#include <QString>
 
 #include "titlebar.h"
 #include "threadlist.h"
 #include "messagelist.h"
 #include "sendbar.h"
+#include "server.h"
 
 // forward declare titlebar
 class TitleBar;
@@ -34,11 +36,15 @@ private slots:
     void minimize();
     void windowMove(QPoint posChange);
 
+    void serverInput(QString);
+
     void threadChanged(int);
 
 private:
     void createActions();
     void createMenus();
+
+    Server *server;
 
     TitleBar *titlebar;
     QMenu *settingsMenu;

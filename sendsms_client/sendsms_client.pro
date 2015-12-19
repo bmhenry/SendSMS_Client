@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -21,7 +21,9 @@ SOURCES += main.cpp\
     messagelist.cpp \
     sendbar.cpp \
     fileio.cpp \
-    gracefulsms.cpp
+    gracefulsms.cpp \
+    server.cpp \
+    sms.cpp
 
 HEADERS  += mainwindow.h \
     titlebar.h \
@@ -31,7 +33,9 @@ HEADERS  += mainwindow.h \
     messageitem.h \
     sendbar.h \
     fileio.h \
-    gracefulsms.h
+    gracefulsms.h \
+    server.h \
+    sms.h
 
 FORMS    +=
 

@@ -1,6 +1,7 @@
 #include "messagelist.h"
 
 #include <QVBoxLayout>
+#include <QDateTime>
 
 #include "messageitem.h"
 
@@ -20,17 +21,24 @@ MessageList::MessageList(QWidget *parent)
     layout->addWidget(list);
 }
 
-void MessageList::addItem(QString text, QString timestamp, bool type)
+void MessageList::addItem(QString text, QString timestamp, int type)
 {
     // create item to add to list
     QListWidgetItem *item = new QListWidgetItem(list);
 
+    //QDateTime time = QDateTime::fromMSecsSinceEpoch(timestamp.toInt());
+    //QString stamp = time.toString(QString("h:mm A, MMM dd"));
+
     // create widget for item
+    // if it doesn't have a timestamp, don't try to give it one
+    // timestamp.trimmed() == "" ? "" : stamp
     MessageItem *widget = new MessageItem(text, timestamp, type, list);
 
     item->setSizeHint(widget->minimumSizeHint());
 
     list->setItemWidget(item, widget);
+
+    list->scrollToBottom();
 }
 
 void MessageList::clear()

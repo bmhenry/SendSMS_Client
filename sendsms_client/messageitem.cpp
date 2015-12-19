@@ -20,13 +20,13 @@ MessageItem::MessageItem(QString text, QString timestamp, bool type, QWidget *pa
     // create expanding widget to fill empty space (fills 2/3 of the space)
     QWidget *expander = new QWidget(this);
 
-    if (type == MessageList::RECEIVED)
+    if (type == SMS::RECEIVED)
     {
         innerWidget->setStyleSheet(QString("MessageItem > QFrame{background:#7781ef;border:1px solid white; border-radius:5px;}"));
         layout->addWidget(innerWidget, 2);
         layout->addWidget(expander, 3);
     }
-    else if (type == MessageList::SENT)
+    else if (type == SMS::SENT)
     {
         innerWidget->setStyleSheet(QString("MessageItem > QFrame{background:#32db6a;border:1px solid white; border-radius:5px;}"));
         layout->addWidget(expander, 3);

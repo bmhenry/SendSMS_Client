@@ -5,6 +5,8 @@
 #include <QLabel>
 #include <QString>
 
+#include "fileio.h"
+
 
 class MessageList : public QFrame
 {
@@ -13,11 +15,8 @@ class MessageList : public QFrame
 public:
     MessageList(QWidget *parent = 0);
 
-    const static bool SENT = 1;
-    const static bool RECEIVED = 0;
-
     // type 0 = received message, type 1 = sent message
-    void addItem(QString text, QString timestamp, bool type);
+    void addItem(QString text, QString timestamp, int type);
     void clear();
 
 private:

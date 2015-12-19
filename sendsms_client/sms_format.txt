@@ -1,7 +1,7 @@
 SMS will be in a text file with the following format
 
-IN means a received message
-OUT is a sent message
+RECEIVED means a received message
+SENT is a sent message
 
 First section is structured as an sms, but contains the list of all people in the message
 

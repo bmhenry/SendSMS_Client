@@ -3,7 +3,10 @@
 #include <QLabel>
 #include <QVBoxLayout>
 
+#include <QList>
+
 #include "threaditem.h"
+#include "fileio.h"
 
 
 ThreadList::ThreadList(QWidget *parent)
@@ -26,6 +29,11 @@ ThreadList::ThreadList(QWidget *parent)
     connect(list, SIGNAL(currentRowChanged(int)), this, SIGNAL(selectionChanged(int)));
 }
 
+void ThreadList::setSelection(int index)
+{
+    list->setCurrentRow(index);
+}
+
 void ThreadList::addItem(QString filename, QString title, QString text)
 {
     // create item to add to list
@@ -37,6 +45,20 @@ void ThreadList::addItem(QString filename, QString title, QString text)
     item->setSizeHint(widget->minimumSizeHint());
 
     list->setItemWidget(item, widget);
+}
+
+void ThreadList::addConversation(QString filename)
+{
+    // open the file and get the first sms for list
+    QList<SMS> sms_list = sms_parse(filename);
+
+    QString people, first_message;
+    if (sms_list.length() >= 2)
+    {
+        people = sms_list.at(0).people;
+        first_message = sms_list.at(1).message;
+        this->addItem(filename, people, first_message);
+    }
 }
 
 QString ThreadList::getCurrentFilename()
