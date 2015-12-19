@@ -41,10 +41,11 @@ void ThreadList::addItem(QString filename, QString title, QString text)
 
     // create widget for item
     ThreadItem *widget = new ThreadItem(filename, title, text, this);
-
     item->setSizeHint(widget->minimumSizeHint());
-
     list->setItemWidget(item, widget);
+
+    // add filename to list
+    sms_filename_list.append(filename);
 }
 
 void ThreadList::addConversation(QString filename)
@@ -59,6 +60,11 @@ void ThreadList::addConversation(QString filename)
         first_message = sms_list.at(1).message;
         this->addItem(filename, people, first_message);
     }
+}
+
+bool ThreadList::contains(QString filename)
+{
+    return sms_filename_list.contains(filename);
 }
 
 QString ThreadList::getCurrentFilename()

@@ -25,7 +25,7 @@ bool first_run()
     sms_about();
 
     // create example text
-    sms_example();
+    //sms_example();
 
     return true;
 }

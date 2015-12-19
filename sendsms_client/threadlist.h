@@ -19,11 +19,14 @@ public:
     QString getCurrentFilename();
     void setSelection(int index);
 
+    bool contains(QString filename);
+
 signals:
     void selectionChanged(int);
 
 private:
     QListWidget *list;
+    QList<QString> sms_filename_list;
 };
 
 

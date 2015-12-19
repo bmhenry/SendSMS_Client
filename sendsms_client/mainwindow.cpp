@@ -170,7 +170,7 @@ void MainWindow::serverInput(QString str)
         threadChanged((int) 0);
     // if the file already exists, then so does the thread. do nothing more
     // but if the file doesn't exist, create it and add a new thread
-    else if (!sms_exists(result_filename))
+    else if (!threadList->contains(result_filename))
     {
         QString filename = result_filename;
 
