@@ -45,7 +45,7 @@ MainWindow::MainWindow()
     setCentralWidget(w);
 
     w->setObjectName("centralWidget");
-    w->setStyleSheet(QString("#centralWidget{background:#777777;}"));
+    w->setStyleSheet(QString("#centralWidget{background:white;padding:0;}"));
 
     QVBoxLayout *mainLayout = new QVBoxLayout(w);
     mainLayout->setMargin(0);
@@ -89,6 +89,7 @@ MainWindow::MainWindow()
     // Bar for sending messages
     sendBar = new SendBar(messageContainer);
     mcLayout->addWidget(sendBar);
+    w->connect(sendBar, SIGNAL(sendSent(QString)), this, SLOT(sendMessage(QString)));
 
     listLayout->addWidget(messageContainer, 5);
 
@@ -162,25 +163,35 @@ void MainWindow::threadChanged(int)
 
 void MainWindow::serverInput(QString str)
 {
-    QString result_filename = handle_input(str);
+    QList<QString> info = handle_input(str);
+    QString filename = info.at(0);
 
     // if the file that was changed is the same as the one currently viewed...
-    if (result_filename == threadList->getCurrentFilename())
+    if (filename == threadList->getCurrentFilename())
         // update the displayed messages
         threadChanged((int) 0);
     // if the file already exists, then so does the thread. do nothing more
     // but if the file doesn't exist, create it and add a new thread
-    else if (!threadList->contains(result_filename))
+    else if (!threadList->contains(filename))
     {
-        QString filename = result_filename;
-
         qDebug() << filename;
         if (filename == "." || filename == "..")
             return;
 
         threadList->addConversation(filename);
-        threadList->repaint();
     }
+
+    // update the message preview text for the thread
+    threadList->setTextAt(filename, info.at(1));
+    threadList->repaint();
+}
+
+void MainWindow::sendMessage(QString str)
+{
+    // get the current number of the person being messaged
+    QString number = threadList->getCurrentNumber();
+    // send the number followed by the message, \n after the number and 0x1d after the message
+    server->sendString(number + "\n" + str + QChar(0x1d));
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

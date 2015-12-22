@@ -6,6 +6,8 @@
 #include <QString>
 #include <QList>
 
+#include "threaditem.h"
+
 
 class ThreadList : public QFrame
 {
@@ -16,8 +18,12 @@ public:
 
     void addItem(QString filename, QString title, QString text);
     void addConversation(QString filename);
-    QString getCurrentFilename();
     void setSelection(int index);
+
+    QString getCurrentFilename();
+    QString getCurrentNumber();
+
+    void setTextAt(QString filename, QString text);
 
     bool contains(QString filename);
 
@@ -26,7 +32,9 @@ signals:
 
 private:
     QListWidget *list;
+
     QList<QString> sms_filename_list;
+    QList<ThreadItem*> itemList;    // list of pointers to the widgets in the listwidgetitems
 };
 
 

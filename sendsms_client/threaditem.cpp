@@ -16,12 +16,12 @@ ThreadItem::ThreadItem(QString filename, QString title, QString text, QWidget *p
 
     titleLabel = new QLabel(title, this, 0);
     titleLabel->setFont(titleFont);
-    titleLabel->setStyleSheet(QString("color:white;"));
+    //titleLabel->setStyleSheet(QString("color:white;"));
     titleLabel->setFixedWidth(170);
 
     textLabel= new QLabel(text, this, 0);
     textLabel->setFont(textFont);
-    textLabel->setStyleSheet(QString("color:white;"));
+    //textLabel->setStyleSheet(QString("color:white;"));
     textLabel->setFixedWidth(170);
 
     l->addWidget(titleLabel);
@@ -31,6 +31,11 @@ ThreadItem::ThreadItem(QString filename, QString title, QString text, QWidget *p
 void ThreadItem::setTitle(QString title)
 {
     titleLabel->setText(title);
+}
+
+QString ThreadItem::getTitle()
+{
+    return titleLabel->text();
 }
 
 void ThreadItem::setText(QString text)

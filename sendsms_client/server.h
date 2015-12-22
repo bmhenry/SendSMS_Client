@@ -13,6 +13,8 @@ public:
 
     void start();
     void stop();
+    void sendString(QString string);
+
     inline bool isActive() { return server->isListening(); }
     inline quint16 getPort() { return hostPort; }
 
@@ -24,6 +26,7 @@ signals:
 
 private:
     QTcpServer *server;
+    QTcpSocket *socket;
     const quint16 hostPort;
 };
 

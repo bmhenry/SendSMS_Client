@@ -1,6 +1,7 @@
 #include "sendbar.h"
 
 #include <QHBoxLayout>
+#include <QDebug>
 
 
 SendBar::SendBar(QWidget *parent)
@@ -21,4 +22,13 @@ SendBar::SendBar(QWidget *parent)
     sendButton = new QPushButton("Send", this);
 
     layout->addWidget(sendButton);
+
+    connect(textEdit, SIGNAL(returnPressed()), this, SLOT(sendPressed()));
+    connect(sendButton, SIGNAL(released()), this, SLOT(sendPressed()));
+}
+
+void SendBar::sendPressed()
+{
+    emit sendSent(textEdit->text());
+    textEdit->clear();
 }

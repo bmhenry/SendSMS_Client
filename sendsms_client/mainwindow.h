@@ -37,6 +37,7 @@ private slots:
     void windowMove(QPoint posChange);
 
     void serverInput(QString);
+    void sendMessage(QString);
 
     void threadChanged(int);
 

@@ -108,13 +108,15 @@ void sms_append(QString fileName, QString addition)
     file.close();
 }
 
-QString handle_input(QString info)
+QList<QString> handle_input(QString sms_packet)
 {
+    QList<QString> return_info;
+
     // parse the information
-    SMS sms(info);
+    SMS sms(sms_packet);
 
     if (sms.type == SMS::EMPTY)
-        return NULL; // bad sms, do nothing
+        return return_info; // bad sms, do nothing
 
     // get the list of people and use it to create the sms file
     // for now this only works for conversations with only one other person
@@ -127,5 +129,8 @@ QString handle_input(QString info)
     // then append the file
     sms_append(filename, sms.toString());
 
-    return filename;
+    return_info.append(filename);
+    return_info.append(sms.message);
+
+    return return_info;
 }

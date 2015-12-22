@@ -42,7 +42,7 @@ QList<SMS> sms_parse(QString filename);
 void sms_append(QString fileName, QString addition);
 
 // handles info sent to the server from the android device
-QString handle_input(QString info);
+QList<QString> handle_input(QString info);
 
 
 #endif // FILEIO

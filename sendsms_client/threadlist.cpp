@@ -14,11 +14,14 @@ ThreadList::ThreadList(QWidget *parent)
 {
     list = new QListWidget(this);
     list->setMinimumWidth(200);
-    list->setStyleSheet(QString(
-                            "QListWidget{border:1px solid black; background:#aaaaaa;}"
-                            "QListWidget::item{background:#515151;}"
-                            "QListWidget::item:selected{background:#c94c4c;}"
+
+    this->setStyleSheet(QString(
+                            "QListWidget{border:1px solid black; background:#fefefe; show-decoration-selected:0;}"
+                            "QListWidget::item{background:#FFF176; color:black;}"
+                            "QListWidget::item:alternate{background:#FFD54F;}"
+                            "QListWidget::item:selected{ background:#F9A825; color:white;}"
                             "QListWidget::item:focus{border:0px;}"));
+    list->setAlternatingRowColors(true);
 
     // create layout to display list within this widget
     QVBoxLayout *layout = new QVBoxLayout(this);
@@ -46,6 +49,7 @@ void ThreadList::addItem(QString filename, QString title, QString text)
 
     // add filename to list
     sms_filename_list.append(filename);
+    itemList.append(widget);
 }
 
 void ThreadList::addConversation(QString filename)
@@ -53,12 +57,12 @@ void ThreadList::addConversation(QString filename)
     // open the file and get the first sms for list
     QList<SMS> sms_list = sms_parse(filename);
 
-    QString people, first_message;
+    QString people, last_message;
     if (sms_list.length() >= 2)
     {
         people = sms_list.at(0).people;
-        first_message = sms_list.at(1).message;
-        this->addItem(filename, people, first_message);
+        last_message = sms_list.at(sms_list.length() - 1).message;
+        this->addItem(filename, people, last_message);
     }
 }
 
@@ -67,8 +71,24 @@ bool ThreadList::contains(QString filename)
     return sms_filename_list.contains(filename);
 }
 
+void ThreadList::setTextAt(QString filename, QString text)
+{
+    int index = sms_filename_list.indexOf(filename);
+    if (index >= 0)
+    {
+        ThreadItem *item = itemList.at(index);
+        item->setText(text);
+    }
+}
+
 QString ThreadList::getCurrentFilename()
 {
     ThreadItem *item = (ThreadItem*)list->itemWidget(list->currentItem());
     return item->getFile();
+}
+
+QString ThreadList::getCurrentNumber()
+{
+    ThreadItem *item = (ThreadItem*)list->itemWidget(list->currentItem());
+    return item->getTitle();
 }

@@ -22,13 +22,13 @@ MessageItem::MessageItem(QString text, QString timestamp, bool type, QWidget *pa
 
     if (type == SMS::RECEIVED)
     {
-        innerWidget->setStyleSheet(QString("MessageItem > QFrame{background:#7781ef;border:1px solid white; border-radius:5px;}"));
+        innerWidget->setStyleSheet(QString("MessageItem > QFrame{background:#FFCC80; border-radius:5px;}"));
         layout->addWidget(innerWidget, 2);
         layout->addWidget(expander, 3);
     }
     else if (type == SMS::SENT)
     {
-        innerWidget->setStyleSheet(QString("MessageItem > QFrame{background:#32db6a;border:1px solid white; border-radius:5px;}"));
+        innerWidget->setStyleSheet(QString("MessageItem > QFrame{background:#FFA726;border:1px solid white; border-radius:5px;}"));
         layout->addWidget(expander, 3);
         layout->addWidget(innerWidget, 2);
     }

@@ -17,7 +17,10 @@ public:
     void setText(QString text);
     void setFile(QString filename);
 
+    inline QString getFilename() { return filename; }
+
     QString getFile();
+    QString getTitle();
 
 private:
     QLabel *titleLabel;

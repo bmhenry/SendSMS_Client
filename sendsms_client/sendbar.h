@@ -18,6 +18,12 @@ public:
     QPushButton *sendButton;
     //QTextEdit *textEdit;
     QLineEdit *textEdit;
+
+public slots:
+    void sendPressed();
+
+signals:
+    void sendSent(QString);
 };
 
 #endif // SENDBAR
