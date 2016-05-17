@@ -14,9 +14,10 @@ SMS::SMS()
 
 SMS::SMS(QString input)
 {
-    if (input[input.size() - 1] != '\n' && input[input.size() - 2] != endchar)
+    if (input == NULL ||
+       (input[input.size() - 1] != '\n' && input[input.size() - 2] != endchar))
     {
-        qDebug() << "Error: input string for SMS::fromString doesn't terminate in proper end character";
+        qDebug() << "Error: input string for SMS() doesn't terminate in proper end character";
         this->type = SMS::EMPTY;
     }
 

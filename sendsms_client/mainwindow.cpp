@@ -121,7 +121,7 @@ MainWindow::MainWindow()
 
     // start tcp server
     server = new Server(this);
-    server->start();
+    server->startServer();
     w->connect(server, SIGNAL(gotInfo(QString)), this, SLOT(serverInput(QString)));
 
     createActions();
@@ -191,7 +191,7 @@ void MainWindow::sendMessage(QString str)
     // get the current number of the person being messaged
     QString number = threadList->getCurrentNumber();
     // send the number followed by the message, \n after the number and 0x1d after the message
-    server->sendString(number + "\n" + str + QChar(0x1d));
+    server->sendString(number + "\n" + str + QChar(0x1d) + "\n");
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -222,7 +222,7 @@ void MainWindow::windowMove(QPoint posChange)
 
 void MainWindow::exit()
 {
-    server->stop();
+    server->stopServer();
 
     qApp->exit(EXIT_SUCCESS);
 }

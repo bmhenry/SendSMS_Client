@@ -1,7 +1,13 @@
 #ifndef SERVER
 #define SERVER
 
+#include <QThread>
+#include <QTextStream>
 #include <QTcpServer>
+#include <QTcpSocket>
+
+#include "listener.h"
+
 
 
 class Server : public QObject
@@ -10,9 +16,11 @@ class Server : public QObject
 
 public:
     Server(QObject *parent = 0);
+    ~Server();
 
-    void start();
-    void stop();
+    void startServer();
+    void stopServer();
+    void getData();
     void sendString(QString string);
 
     inline bool isActive() { return server->isListening(); }
@@ -20,14 +28,17 @@ public:
 
 private slots:
     void handleConnection();
+    void readyRead();
 
 signals:
     void gotInfo(QString);
 
 private:
+    bool should_run;
     QTcpServer *server;
     QTcpSocket *socket;
-    const quint16 hostPort;
+    quint16 hostPort;
+    Listener *listener;
 };
 
 #endif // SERVER
