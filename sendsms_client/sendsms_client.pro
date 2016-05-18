@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     gracefulsms.cpp \
     server.cpp \
     sms.cpp \
-    listener.cpp
+    listener.cpp \
+    notification.cpp
 
 HEADERS  += mainwindow.h \
     titlebar.h \
@@ -37,7 +38,8 @@ HEADERS  += mainwindow.h \
     gracefulsms.h \
     server.h \
     sms.h \
-    listener.h
+    listener.h \
+    notification.h
 
 FORMS    +=
 

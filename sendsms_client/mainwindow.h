@@ -14,6 +14,7 @@
 #include "messagelist.h"
 #include "sendbar.h"
 #include "server.h"
+#include "notification.h"
 
 // forward declare titlebar
 class TitleBar;
@@ -58,6 +59,8 @@ private:
     ThreadList *threadList;
     MessageList *messageList;
     SendBar *sendBar;
+
+    Notification *notification;
 };
 
 #endif // MAINWINDOW_H

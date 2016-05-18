@@ -118,9 +118,17 @@ QList<QString> handle_input(QString sms_packet)
     if (sms.type == SMS::EMPTY)
         return return_info; // bad sms, do nothing
 
+    QString should_notify;
+    if (sms.type == SMS::RECEIVED)
+        should_notify = "1";
+    else
+        should_notify = "0";
+
     // get the list of people and use it to create the sms file
     // for now this only works for conversations with only one other person
-    QString filename = sms.people + ".sms";
+    // use spaces and string.split(" ") for multiple numbers
+    QString number = sms.people;
+    QString filename = number + ".sms";
 
     if (!sms_exists(filename))
         // file doesnt already exist, create it
@@ -129,8 +137,9 @@ QList<QString> handle_input(QString sms_packet)
     // then append the file
     sms_append(filename, sms.toString());
 
-    return_info.append(filename);
-    return_info.append(sms.message);
+    return_info.append(number);       // number
+    return_info.append(should_notify);  // type
+    return_info.append(sms.message);    // message
 
     return return_info;
 }

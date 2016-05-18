@@ -164,7 +164,14 @@ void MainWindow::threadChanged(int)
 void MainWindow::serverInput(QString str)
 {
     QList<QString> info = handle_input(str);
-    QString filename = info.at(0);
+
+    if (info.length() == 0 || info.at(0) == NULL)
+        return;
+
+    QString number = info.at(0);
+    QString filename = number + ".sms";
+    QString type = info.at(1);
+    QString message = info.at(2);
 
     // if the file that was changed is the same as the one currently viewed...
     if (filename == threadList->getCurrentFilename())
@@ -182,8 +189,20 @@ void MainWindow::serverInput(QString str)
     }
 
     // update the message preview text for the thread
-    threadList->setTextAt(filename, info.at(1));
+    threadList->setTextAt(filename, message);
     threadList->repaint();
+
+    // create the notification
+    // TODO: add condition using signals so that new notification doesn't cause
+    //  existing one to disappear if the user is typing in it
+    if (type == "1") {
+        QList<QString> data;
+        data.append("");        // name
+        data.append(number);  // phone number
+        data.append(message);   // message
+        notification = new Notification(data, 10000, this);
+        notification->show();
+    }
 }
 
 void MainWindow::sendMessage(QString str)
