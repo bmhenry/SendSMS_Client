@@ -22,10 +22,11 @@ SOURCES += main.cpp\
     sendbar.cpp \
     fileio.cpp \
     gracefulsms.cpp \
-    server.cpp \
     sms.cpp \
     listener.cpp \
-    notification.cpp
+    notification.cpp \
+    server.cpp \
+    client.cpp
 
 HEADERS  += mainwindow.h \
     titlebar.h \
@@ -36,10 +37,11 @@ HEADERS  += mainwindow.h \
     sendbar.h \
     fileio.h \
     gracefulsms.h \
-    server.h \
     sms.h \
     listener.h \
-    notification.h
+    notification.h \
+    server.h \
+    client.h
 
 FORMS    +=
 

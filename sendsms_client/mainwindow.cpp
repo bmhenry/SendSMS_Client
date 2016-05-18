@@ -54,6 +54,25 @@ MainWindow::MainWindow()
     /*
      *  Window Buttons:
      *                  */
+    menuBar = new QMenuBar(this);
+    statusBar = new QStatusBar(this);
+
+#ifdef QT_DEBUG
+    debugMenu = menuBar->addMenu(QString("Debug"));
+    notificationAct = new QAction(QString("Notification"), this);
+    debugMenu->addAction(notificationAct);
+    connect(notificationAct, SIGNAL(triggered(bool)), this, SLOT(fakeNotify()));
+#endif
+
+    reconnectAct = menuBar->addAction("Reconnect");
+    connect(reconnectAct, SIGNAL(triggered(bool)), this, SLOT(reconnect()));
+
+    setMenuBar(menuBar);
+    setStatusBar(statusBar);
+
+    statusBar->showMessage("Hello!");
+
+
     // create custom bar for window operations
     /*
     titlebar = new TitleBar(w);
@@ -119,13 +138,9 @@ MainWindow::MainWindow()
     // select the first thread
     threadList->setSelection(0);
 
-    // start tcp server
-    server = new Server(this);
-    server->startServer();
-    w->connect(server, SIGNAL(gotInfo(QString)), this, SLOT(serverInput(QString)));
-
-    createActions();
-    createMenus();
+    // start tcp client
+    client = new Client("192.168.0.101", 8000, this);
+    w->connect(client, SIGNAL(gotInfo(QString)), this, SLOT(clientData(QString)));
 
     setWindowTitle(tr("GracefulSMS"));
     resize(800,400);
@@ -161,7 +176,7 @@ void MainWindow::threadChanged(int)
     }
 }
 
-void MainWindow::serverInput(QString str)
+void MainWindow::clientData(QString str)
 {
     QList<QString> info = handle_input(str);
 
@@ -200,8 +215,7 @@ void MainWindow::serverInput(QString str)
         data.append("");        // name
         data.append(number);  // phone number
         data.append(message);   // message
-        notification = new Notification(data, 10000, this);
-        notification->show();
+        notification = new Notification(data, 10000);
     }
 }
 
@@ -210,8 +224,19 @@ void MainWindow::sendMessage(QString str)
     // get the current number of the person being messaged
     QString number = threadList->getCurrentNumber();
     // send the number followed by the message, \n after the number and 0x1d after the message
-    server->sendString(number + "\n" + str + QChar(0x1d) + "\n");
+    client->send(number + "\n" + str + QChar(0x1d) + "\n");
 }
+
+#ifdef QT_DEBUG
+void MainWindow::fakeNotify()
+{
+    QList<QString> fakeData;
+    fakeData.append("name");
+    fakeData.append("number");
+    fakeData.append("message");
+    notification = new Notification(fakeData, 2000);
+}
+#endif
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
@@ -219,12 +244,19 @@ void MainWindow::closeEvent(QCloseEvent *event)
     exit();
 }
 
-void MainWindow::connect()
+void MainWindow::reconnect() {
+    if (client->reconnect())
+        statusBar->showMessage("Reconnected", 5000);
+    else
+        statusBar->showMessage("Couldn't reconnect... Check internet connection");
+}
+
+void MainWindow::connectSocket()
 {
 
 }
 
-void MainWindow::disconnect()
+void MainWindow::disconnectSocket()
 {
 
 }
@@ -241,7 +273,7 @@ void MainWindow::windowMove(QPoint posChange)
 
 void MainWindow::exit()
 {
-    server->stopServer();
+    client->close();
 
     qApp->exit(EXIT_SUCCESS);
 }
@@ -249,14 +281,4 @@ void MainWindow::exit()
 void MainWindow::minimize()
 {
     this->showMinimized();
-}
-
-void MainWindow::createActions()
-{
-
-}
-
-void MainWindow::createMenus()
-{
-
 }

@@ -1,19 +1,24 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QAction>
 #include <QCloseEvent>
+#include <QDebug>
 #include <QLabel>
-#include <QMainWindow>
 #include <QListView>
 #include <QListWidget>
-#include <QWidget>
+#include <QMainWindow>
+#include <QMenu>
+#include <QMenuBar>
+#include <QStatusBar>
 #include <QString>
+#include <QWidget>
 
 #include "titlebar.h"
 #include "threadlist.h"
 #include "messagelist.h"
 #include "sendbar.h"
-#include "server.h"
+#include "client.h"
 #include "notification.h"
 
 // forward declare titlebar
@@ -30,27 +35,37 @@ protected:
     void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
 
 private slots:
-    void connect();
-    void disconnect();
+    void reconnect();
+    void connectSocket();
+    void disconnectSocket();
     void about();
     void exit();
     void minimize();
     void windowMove(QPoint posChange);
 
-    void serverInput(QString);
+    void clientData(QString);
     void sendMessage(QString);
 
     void threadChanged(int);
 
-private:
-    void createActions();
-    void createMenus();
+#ifdef QT_DEBUG
+    void fakeNotify();
+#endif
 
-    Server *server;
+private:
+    Client *client;
 
     TitleBar *titlebar;
+    QMenuBar *menuBar;
+    QStatusBar *statusBar;
+
+#ifdef QT_DEBUG
+    QMenu *debugMenu;
+    QAction *notificationAct;
+#endif
     QMenu *settingsMenu;
 
+    QAction *reconnectAct;
     QAction *connectAct;
     QAction *openAct;
     QAction *aboutAct;

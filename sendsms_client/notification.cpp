@@ -11,8 +11,9 @@
 #include <QPushButton>
 
 
-Notification::Notification(QList<QString> data, quint32 timerInterval, QWidget *parent) :
-    QDialog(parent), timerInterval(timerInterval)
+
+Notification::Notification(QList<QString> data, quint32 msecs, QWidget *parent) :
+    QDialog(parent), isHovered(false)
 {
     name = data.at(0);
     number = data.at(1);
@@ -22,6 +23,9 @@ Notification::Notification(QList<QString> data, quint32 timerInterval, QWidget *
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |
                          Qt::Window | Qt::WindowDoesNotAcceptFocus);
 
+    // cause deletion of object on close
+    this->setAttribute(Qt::WA_DeleteOnClose);
+
     // Set window icon
     setWindowIcon(QIcon("./sms.ico"));
 
@@ -29,10 +33,13 @@ Notification::Notification(QList<QString> data, quint32 timerInterval, QWidget *
     resize(300, 100);
     this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
+    // set background
+    this->setStyleSheet(QString("Notification{background:#ffffff;border:1px solid #aaaaaa;}"));
+
     // move window to bottom right corner of screen
     QRect screenGeometry = QApplication::desktop()->screenGeometry();
-    int x = screenGeometry.width() - this->width();
-    int y = screenGeometry.height() - (this->height() + 100); // get above taskbar
+    int x = screenGeometry.width() - (this->width() + 10);
+    int y = screenGeometry.height() - (this->height() + 40); // get above taskbar
     this->move(x, y);
 
     // create central widget
@@ -54,26 +61,58 @@ Notification::Notification(QList<QString> data, quint32 timerInterval, QWidget *
     connect(closeButton, SIGNAL(clicked(bool)), this, SLOT(closeClicked()));
     QPushButton *replyButton = new QPushButton("Reply", this);
     connect(replyButton, SIGNAL(clicked(bool)), this, SLOT(replyClicked()));
-    buttonLayout->addWidget(closeButton, 0, Qt::AlignRight);
-    buttonLayout->addWidget(replyButton, 0, Qt::AlignLeft);
+    buttonLayout->addWidget(replyButton, 1, Qt::AlignLeft);
+    buttonLayout->addWidget(closeButton, 1, Qt::AlignRight);
 
     mainLayout->addWidget(buttonWidget, 1);
 
     setLayout(mainLayout);
 
     qDebug() << "Notification should be visible.";
-    timer = new QTimer();
-    connect(timer, SIGNAL(timeout()), this, SLOT(hide()));
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(fadeOut()));
 
-    timer->start(timerInterval);
+    timer->start(msecs);
+    anim = new QPropertyAnimation(this, "windowOpacity");
+    anim->setDuration(2000);
+    anim->setStartValue(1);
+    anim->setEndValue(0);
+
+    this->show();
 }
 
 Notification::~Notification() {
-    delete timer;
+
+}
+
+void Notification::enterEvent(QEvent *) {
+    isHovered = true;
+
+    try {
+        anim->stop();
+        this->setWindowOpacity(1);
+    }
+    catch (...) {}
+}
+
+void Notification::leaveEvent(QEvent *) {
+    isHovered = false;
+
+    if (!timer->isActive())
+        timer->start(timer->interval()/2);
+}
+
+void Notification::fadeOut() {
+    if (!isHovered) {
+        // fade out animation
+        anim->start();
+        connect(anim, SIGNAL(finished()), this, SLOT(hide()));
+    }
 }
 
 void Notification::hide() {
-    this->destroy();
+    delete(anim);
+    this->close();
 }
 
 void Notification::replyClicked() {

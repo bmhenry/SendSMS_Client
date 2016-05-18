@@ -71,8 +71,11 @@ QList<SMS> sms_parse(QString filename)
     file.open(QFile::ReadOnly);
 
     // read each line
+    // TODO: find a more efficient way to read/store texts
+    // loads only 20 texts by default
     QTextStream stream(&file);
-    while (!stream.atEnd())
+    int flag = 0;
+    while (!stream.atEnd() && flag < 40)
     {
         SMS sms;
         sms.type = stream.readLine() == "RECEIVED" ? 0 : 1;
@@ -88,6 +91,7 @@ QList<SMS> sms_parse(QString filename)
         }
 
         list.append(sms);
+        flag++;
     }
 
     // close the file
