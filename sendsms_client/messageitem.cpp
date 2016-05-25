@@ -5,7 +5,7 @@
 
 #include "messagelist.h"
 
-MessageItem::MessageItem(QString text, QString timestamp, bool type, QWidget *parent)
+MessageItem::MessageItem(QString text, QString timestamp, SMS::SMS_Type type, QWidget *parent)
     : QFrame(parent)
 {
 

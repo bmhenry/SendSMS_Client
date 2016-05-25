@@ -36,6 +36,7 @@ protected:
 
 private slots:
     void reconnect();
+    void reconnectSuccess();
     void connectSocket();
     void disconnectSocket();
     void about();

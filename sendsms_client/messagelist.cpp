@@ -21,7 +21,7 @@ MessageList::MessageList(QWidget *parent)
     layout->addWidget(list);
 }
 
-void MessageList::addItem(QString text, QString timestamp, int type)
+void MessageList::addItem(QString text, QString timestamp, SMS::SMS_Type type)
 {
     // create item to add to list
     QListWidgetItem *item = new QListWidgetItem(list);

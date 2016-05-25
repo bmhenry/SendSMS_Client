@@ -16,7 +16,7 @@ public:
     MessageList(QWidget *parent = 0);
 
     // type 0 = received message, type 1 = sent message
-    void addItem(QString text, QString timestamp, int type);
+    void addItem(QString text, QString timestamp, SMS::SMS_Type type);
     void clear();
 
 private:

@@ -4,12 +4,14 @@
 #include <QString>
 #include <QLabel>
 
+#include "sms.h"
+
 class MessageItem : public QFrame
 {
     Q_OBJECT
 
 public:
-    MessageItem(QString text, QString timestamp, bool type, QWidget *parent = 0);
+    MessageItem(QString text, QString timestamp, SMS::SMS_Type type, QWidget *parent = 0);
 
 private:
     QLabel *textLabel;

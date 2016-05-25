@@ -37,13 +37,13 @@ void ThreadList::setSelection(int index)
     list->setCurrentRow(index);
 }
 
-void ThreadList::addItem(QString filename, QString title, QString text)
+void ThreadList::addItem(QString filename, QString name, QString number, QString text)
 {
     // create item to add to list
     QListWidgetItem *item = new QListWidgetItem(list);
 
     // create widget for item
-    ThreadItem *widget = new ThreadItem(filename, title, text, this);
+    ThreadItem *widget = new ThreadItem(filename, name, number, text, this);
     item->setSizeHint(widget->minimumSizeHint());
     list->setItemWidget(item, widget);
 
@@ -57,12 +57,13 @@ void ThreadList::addConversation(QString filename)
     // open the file and get the first sms for list
     QList<SMS> sms_list = sms_parse(filename);
 
-    QString people, last_message;
+    QString names, numbers, last_message;
     if (sms_list.length() >= 2)
     {
-        people = sms_list.at(0).people;
+        names = sms_list.at(0).names;
+        numbers = sms_list.at(0).numbers;
         last_message = sms_list.at(sms_list.length() - 1).message;
-        this->addItem(filename, people, last_message);
+        this->addItem(filename, names, numbers, last_message);
     }
 }
 
@@ -84,11 +85,17 @@ void ThreadList::setTextAt(QString filename, QString text)
 QString ThreadList::getCurrentFilename()
 {
     ThreadItem *item = (ThreadItem*)list->itemWidget(list->currentItem());
-    return item->getFile();
+    return item->getFilename();
 }
 
 QString ThreadList::getCurrentNumber()
 {
     ThreadItem *item = (ThreadItem*)list->itemWidget(list->currentItem());
-    return item->getTitle();
+    return item->getNumber();
+}
+
+QString ThreadList::getCurrentName()
+{
+    ThreadItem *item = (ThreadItem*)list->itemWidget(list->currentItem());
+    return item->getName();
 }

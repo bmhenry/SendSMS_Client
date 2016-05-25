@@ -11,21 +11,25 @@ class ThreadItem : public QFrame
     Q_OBJECT
 
 public:
-    ThreadItem(QString filename, QString title, QString text, QWidget *parent = 0);
+    ThreadItem(QString filename, QString name, QString number, QString text, QWidget *parent = 0);
 
-    void setTitle(QString title);
-    void setText(QString text);
-    void setFile(QString filename);
+    inline void setTitle(QString title) { titleLabel->setText(title); }
+    inline void setText(QString text) { textLabel->setText(text) ;}
+    inline void setFilename(QString filename) { this->filename = filename; }
+    inline void setName(QString name) { this->name = name; }
+    inline void setNumber(QString number) { this->number = number; }
 
     inline QString getFilename() { return filename; }
+    inline QString getName() { return name; }
+    inline QString getNumber() { return number; }
 
-    QString getFile();
-    QString getTitle();
 
 private:
     QLabel *titleLabel;
     QLabel *textLabel;
     QString filename;
+    QString name;
+    QString number;
 };
 
 

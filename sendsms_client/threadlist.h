@@ -16,12 +16,13 @@ class ThreadList : public QFrame
 public:
     ThreadList(QWidget *parent = 0);
 
-    void addItem(QString filename, QString title, QString text);
+    void addItem(QString filename, QString name, QString number, QString text);
     void addConversation(QString filename);
     void setSelection(int index);
 
     QString getCurrentFilename();
     QString getCurrentNumber();
+    QString getCurrentName();
 
     void setTextAt(QString filename, QString text);
 

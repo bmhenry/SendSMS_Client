@@ -8,18 +8,17 @@
 
 void sms_about()
 {
-    QFile file(app_dir() + "/about.txt");
-    file.open(QFile::WriteOnly);
-
-    QTextStream out(&file);
     QString welcome(
                 "Hey there!"
-                "I hope that this app proves useful to you, and also makes you feel safer"
+                "I hope that this app proves useful to you, and also makes you feel safer "
                 "about using a service to text from your computer while at home.\n"
+                "SMS files are stored in the 'sms' folder, which you can find in "
+                "the same folder as this program. Just to make sure you know where to find "
+                "it, go delete this welcome message (delete the 'about.txt' file)\n"
                 );
-    out << welcome;
 
-    file.close();
+    sms_makefile("about.sms", "GracefulSMS", "");
+    sms_append("about.txt", SMS(SMS::RECEIVED, "Now", "", "GracefulSMS", welcome).toString());
 }
 
 void sms_example()
@@ -28,20 +27,20 @@ void sms_example()
     file.open(QFile::WriteOnly);
 
     QTextStream out(&file);
-    out << SMS(SMS::RECEIVED, "NOW", "Person A, Person B, Person C", "HEADER").toString();
-    out << SMS(SMS::RECEIVED, "NOW", "Them", "This is a test!").toString();
-    out << SMS(SMS::SENT, "THEN", "Me", "This is simply another test!").toString();
+    out << SMS(SMS::RECEIVED, "NOW", "Num1, Num2, Num3", "Person A, Person B, Person C", "HEADER").toString();
+    out << SMS(SMS::RECEIVED, "NOW", "Number", "Them", "This is a test!").toString();
+    out << SMS(SMS::SENT, "THEN", "MyNumber", "Me", "This is simply another test!").toString();
 
     file.close();
 }
 
-void sms_makefile(QString filename, QString people)
+void sms_makefile(QString filename, QString names, QString numbers)
 {
     QFile file(sms_dir() + filename);
     file.open(QFile::WriteOnly);
 
     QTextStream out(&file);
-    out << SMS(SMS::RECEIVED, "INTRO", people, "INTRO").toString();
+    out << SMS(SMS::RECEIVED, "INTRO", numbers, names, "INTRO").toString();
 
     file.close();
 }
@@ -72,15 +71,16 @@ QList<SMS> sms_parse(QString filename)
 
     // read each line
     // TODO: find a more efficient way to read/store texts
-    // loads only 20 texts by default
+    // loads only 40 texts by default
     QTextStream stream(&file);
-    int flag = 0;
-    while (!stream.atEnd() && flag < 40)
+    //int flag = 0;
+    while (!stream.atEnd())// && flag < 40)
     {
         SMS sms;
-        sms.type = stream.readLine() == "RECEIVED" ? 0 : 1;
+        sms.type = stream.readLine() == "RECEIVED" ? SMS::RECEIVED : SMS::SENT;
         sms.timestamp = stream.readLine();
-        sms.people = stream.readLine();
+        sms.numbers = stream.readLine();
+        sms.names = stream.readLine();
 
         QString line;
         line = stream.readLine();
@@ -91,7 +91,7 @@ QList<SMS> sms_parse(QString filename)
         }
 
         list.append(sms);
-        flag++;
+        //flag++;
     }
 
     // close the file
@@ -131,17 +131,17 @@ QList<QString> handle_input(QString sms_packet)
     // get the list of people and use it to create the sms file
     // for now this only works for conversations with only one other person
     // use spaces and string.split(" ") for multiple numbers
-    QString number = sms.people;
-    QString filename = number + ".sms";
+    QString filename = sms.numbers + ".sms";
 
     if (!sms_exists(filename))
         // file doesnt already exist, create it
-        sms_makefile(filename, sms.people);
+        sms_makefile(filename, sms.names, sms.numbers);
 
     // then append the file
     sms_append(filename, sms.toString());
 
-    return_info.append(number);       // number
+    return_info.append(sms.numbers);       // number
+    return_info.append(sms.names);
     return_info.append(should_notify);  // type
     return_info.append(sms.message);    // message
 

@@ -8,11 +8,13 @@ First section is structured as an sms, but contains the list of all people in th
 (newlines shown will be expected)
 INFO(this signifies information sms, currently not required)\n
 TIMESTAMP(doesnt matter)\n
-FROM(list of all people)\n
-MESSAGE(doesnt matter)\n
+NUMBERS(list of all people's numbers)\n
+NAMES(list of all people's names)\n
+MESSAGE(doesnt matter)
 [0x1d]\n
 IN\n
 TIMESTAMP\n
-FROM(each person in this category separated by [0x1f] unit separator)\n
-MESSAGE(may be multiple lines)\n
+NUMBERS(each number in this category separated by space)\n
+NAMES(each  name separated by comma)\n
+MESSAGE(may be multiple lines)
 [0x1d](Group separator marks the end)\n

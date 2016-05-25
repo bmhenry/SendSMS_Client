@@ -118,9 +118,6 @@ MainWindow::MainWindow()
      *  Get SMS threads
      */
 
-    // add the about file first
-    threadList->addItem("about.txt", "GracefulSMS", "Hello!");
-
     QStringList file_list = sms_get_list();
 
     for (int file = 0; file < file_list.length(); file++)
@@ -139,8 +136,9 @@ MainWindow::MainWindow()
     threadList->setSelection(0);
 
     // start tcp client
-    client = new Client("192.168.0.101", 8000, this);
+    client = new Client("192.168.0.100", 8000, this);
     w->connect(client, SIGNAL(gotInfo(QString)), this, SLOT(clientData(QString)));
+    w->connect(client, SIGNAL(connectSuccess()), this, SLOT(reconnectSuccess()));
 
     setWindowTitle(tr("GracefulSMS"));
     resize(800,400);
@@ -153,16 +151,16 @@ void MainWindow::threadChanged(int)
     QString filename = threadList->getCurrentFilename();
 
     // case for the about text
-    if (filename == "about.txt")
-    {
-        QFile about(app_dir() + "/about.txt");
-        about.open(QFile::ReadOnly);
-        messageList->clear();
-        messageList->addItem(QString(about.readAll()), "", SMS::RECEIVED);
-        about.close();
+//    if (filename == "about.txt")
+//    {
+//        QFile about(sms_dir() + "/about.txt");
+//        about.open(QFile::ReadOnly);
+//        messageList->clear();
+//        messageList->addItem(QString(about.readAll()), "", SMS::RECEIVED);
+//        about.close();
 
-        return;
-    }
+//        return;
+//    }
 
     // update the message thread
     QList<SMS> sms_list = sms_parse(filename);
@@ -184,9 +182,10 @@ void MainWindow::clientData(QString str)
         return;
 
     QString number = info.at(0);
+    QString name = info.at(1);
     QString filename = number + ".sms";
-    QString type = info.at(1);
-    QString message = info.at(2);
+    QString type = info.at(2);
+    QString message = info.at(3);
 
     // if the file that was changed is the same as the one currently viewed...
     if (filename == threadList->getCurrentFilename())
@@ -212,7 +211,7 @@ void MainWindow::clientData(QString str)
     //  existing one to disappear if the user is typing in it
     if (type == "1") {
         QList<QString> data;
-        data.append("");        // name
+        data.append(name);        // name
         data.append(number);  // phone number
         data.append(message);   // message
         notification = new Notification(data, 10000);
@@ -223,8 +222,11 @@ void MainWindow::sendMessage(QString str)
 {
     // get the current number of the person being messaged
     QString number = threadList->getCurrentNumber();
+    QString name = threadList->getCurrentName();
     // send the number followed by the message, \n after the number and 0x1d after the message
-    client->send(number + "\n" + str + QChar(0x1d) + "\n");
+    QString sendString = number + "\n" + name + "\n" + str + QChar(0x1d) + "\n";
+    qDebug() << "sending:\n" << sendString;
+    client->send(sendString);
 }
 
 #ifdef QT_DEBUG
@@ -245,10 +247,11 @@ void MainWindow::closeEvent(QCloseEvent *event)
 }
 
 void MainWindow::reconnect() {
-    if (client->reconnect())
-        statusBar->showMessage("Reconnected", 5000);
-    else
-        statusBar->showMessage("Couldn't reconnect... Check internet connection");
+    client->reconnect();
+}
+
+void MainWindow::reconnectSuccess() {
+    statusBar->showMessage("Reconnected", 5000);
 }
 
 void MainWindow::connectSocket()

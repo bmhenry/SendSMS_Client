@@ -22,7 +22,10 @@ public:
     bool send(QString string);
     void close();
 
+    bool connected;
+
 signals:
+    void connectSuccess();
     void gotInfo(QString);
 
 public slots:
@@ -30,7 +33,6 @@ public slots:
     void connectionEstablished();
 
 private:
-    bool connected;
     QString address;
     quint16 hostPort;
     QTcpSocket *socket;

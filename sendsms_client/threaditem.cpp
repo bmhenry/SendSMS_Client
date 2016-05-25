@@ -1,11 +1,8 @@
 #include "threaditem.h"
 
-ThreadItem::ThreadItem(QString filename, QString title, QString text, QWidget *parent)
-    : QFrame(parent)
+ThreadItem::ThreadItem(QString filename, QString name, QString number, QString text, QWidget *parent)
+    : QFrame(parent), filename(filename), name(name), number(number)
 {
-    // set the sms file
-    this->filename = QString(filename);
-
     // create a layout
     QVBoxLayout *l = new QVBoxLayout(this);
 
@@ -14,7 +11,7 @@ ThreadItem::ThreadItem(QString filename, QString title, QString text, QWidget *p
     // font for message preview
     QFont textFont("Helvetica", 10);
 
-    titleLabel = new QLabel(title, this, 0);
+    titleLabel = new QLabel(name, this, 0);
     titleLabel->setFont(titleFont);
     //titleLabel->setStyleSheet(QString("color:white;"));
     titleLabel->setFixedWidth(170);
@@ -26,29 +23,4 @@ ThreadItem::ThreadItem(QString filename, QString title, QString text, QWidget *p
 
     l->addWidget(titleLabel);
     l->addWidget(textLabel);
-}
-
-void ThreadItem::setTitle(QString title)
-{
-    titleLabel->setText(title);
-}
-
-QString ThreadItem::getTitle()
-{
-    return titleLabel->text();
-}
-
-void ThreadItem::setText(QString text)
-{
-    textLabel->setText(text);
-}
-
-void ThreadItem::setFile(QString filename)
-{
-    this->filename = filename;
-}
-
-QString ThreadItem::getFile()
-{
-    return filename;
 }

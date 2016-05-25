@@ -21,7 +21,14 @@ Client::~Client() {
 }
 
 bool Client::reconnect() {
+    if (connected) {
+        try {
+            socket->close();
+        } catch (...) {}
+    }
+
     try {
+        socket->setSocketOption(QTcpSocket::KeepAliveOption, 1);
         socket->connectToHost(QHostAddress(address), hostPort, QTcpSocket::ReadWrite);
         connect(socket, SIGNAL(readyRead()), this, SLOT(getData()));
         connect(socket, SIGNAL(connected()), this, SLOT(connectionEstablished()));
@@ -36,6 +43,7 @@ bool Client::reconnect() {
 void Client::connectionEstablished() {
     connected = true;
     qDebug() << "Successfully connected";
+    emit connectSuccess();
 }
 
 void Client::getData() {
@@ -44,19 +52,14 @@ void Client::getData() {
     // get info from socket
     QTextStream stream(socket);
     QString str = stream.readAll();
-    if (str == "")
-        return;
     qDebug() << "client got: " << str
              << "; from: " << socket->peerAddress().toString();
+    if (str == " " || str == "")
+        return;
     QStringList strings = str.split(sep, QString::SkipEmptyParts);
 
-    for (int i = 0; i < strings.length(); i++)
-        strings[i].append(sep);
-
-    qDebug() << strings;
-
     for (int i = 0; i < strings.length(); i++) {
-        //strings[i].append(sep);
+        strings[i].append(sep);
         qDebug() << strings[i];
         emit gotInfo(strings[i]);
     }

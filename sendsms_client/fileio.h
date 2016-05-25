@@ -27,7 +27,7 @@ void sms_about();
 inline bool sms_exists(QString fileName) { return QFile::exists(QString(sms_dir() + fileName)); }
 
 // create an sms file
-void sms_makefile(QString filename, QString people);
+void sms_makefile(QString filename, QString names, QString numbers);
 
 // get list of sms files in the sms directory
 QStringList sms_get_list();

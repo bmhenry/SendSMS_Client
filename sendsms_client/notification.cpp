@@ -21,10 +21,11 @@ Notification::Notification(QList<QString> data, quint32 msecs, QWidget *parent) 
 
     // Remove default frame and window buttons
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |
-                         Qt::Window | Qt::WindowDoesNotAcceptFocus);
+                         Qt::Window);
 
     // cause deletion of object on close
     this->setAttribute(Qt::WA_DeleteOnClose);
+    this->setAttribute(Qt::WA_ShowWithoutActivating);
 
     // Set window icon
     setWindowIcon(QIcon("./sms.ico"));
@@ -39,16 +40,17 @@ Notification::Notification(QList<QString> data, quint32 msecs, QWidget *parent) 
     // move window to bottom right corner of screen
     QRect screenGeometry = QApplication::desktop()->screenGeometry();
     int x = screenGeometry.width() - (this->width() + 10);
-    int y = screenGeometry.height() - (this->height() + 40); // get above taskbar
+    int y = screenGeometry.height() - (this->height() + 50); // get above taskbar
     this->move(x, y);
 
     // create central widget
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setSpacing(10);
 
-    QLabel *numberLabel = new QLabel(this);
-    numberLabel->setText(number);
-    mainLayout->addWidget(numberLabel, 0, Qt::AlignLeft);
+    QLabel *nameLabel = new QLabel(this);
+    nameLabel->setWordWrap(true);
+    nameLabel->setText(name);
+    mainLayout->addWidget(nameLabel, 0, Qt::AlignLeft);
 
     QLabel *messageLabel = new QLabel(this);
     messageLabel->setText(message);
@@ -73,7 +75,7 @@ Notification::Notification(QList<QString> data, quint32 msecs, QWidget *parent) 
     connect(timer, SIGNAL(timeout()), this, SLOT(fadeOut()));
 
     timer->start(msecs);
-    anim = new QPropertyAnimation(this, "windowOpacity");
+    anim = new QPropertyAnimation(this, "windowOpacity", this);
     anim->setDuration(2000);
     anim->setStartValue(1);
     anim->setEndValue(0);
@@ -111,8 +113,7 @@ void Notification::fadeOut() {
 }
 
 void Notification::hide() {
-    delete(anim);
-    this->close();
+    this->destroy();
 }
 
 void Notification::replyClicked() {
@@ -120,5 +121,5 @@ void Notification::replyClicked() {
 }
 
 void Notification::closeClicked() {
-    this->close();
+    this->destroy();
 }
