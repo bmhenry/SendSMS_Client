@@ -1,50 +1,63 @@
 #include "messageitem.h"
 
 #include <QHBoxLayout>
-#include <QVBoxLayout>
+#include <QPointer>
+#include <QDebug>
 
 #include "messagelist.h"
 
-MessageItem::MessageItem(QString text, QString timestamp, SMS::SMS_Type type, QWidget *parent)
-    : QFrame(parent)
+MessageItem::MessageItem(QString text, QString timestamp, SMS::SMS_Type type,
+                         QListWidgetItem *item, QWidget *parent)
+    : QFrame(parent), messageContainer(NULL), item(item)
 {
+    qDebug() << "MI: " << this->size();
 
     // create widget layout
     QHBoxLayout *layout = new QHBoxLayout(this);
+    layout->setContentsMargins(padding, padding, padding, padding);
+
+//    this->setMinimumWidth(450);
 
     // create inner widget (allows aligning the message inside if it's a sent/recieved message)
-    QFrame *innerWidget = new QFrame(this);
-    innerWidget->setMinimumWidth(200);
-    innerWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    messageContainer = new MessageTextContainer(text, timestamp, this);
+    messageContainer->setMinimumWidth(200);
+    messageContainer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
+    connect(messageContainer, SIGNAL(resized(QSize)), this, SLOT(catchResized(QSize)));
+
 
     // create expanding widget to fill empty space (fills 2/3 of the space)
     QWidget *expander = new QWidget(this);
 
     if (type == SMS::RECEIVED)
     {
-        innerWidget->setStyleSheet(QString("MessageItem > QFrame{background:#FFCC80; border-radius:5px;}"));
-        layout->addWidget(innerWidget, 2);
-        layout->addWidget(expander, 3);
+        messageContainer->setStyleSheet(QString("MessageTextContainer{background:#FFCC80; border-radius:5px;}"));
+        layout->addWidget(messageContainer, 1);
+        layout->addWidget(expander, 2);
     }
     else if (type == SMS::SENT)
     {
-        innerWidget->setStyleSheet(QString("MessageItem > QFrame{background:#FFA726;border:1px solid white; border-radius:5px;}"));
-        layout->addWidget(expander, 3);
-        layout->addWidget(innerWidget, 2);
+        messageContainer->setStyleSheet(QString("MessageTextContainer{background:#FFA726; border-radius:5px;}"));
+        layout->addWidget(expander, 2);
+        layout->addWidget(messageContainer, 1);
     }
 
-    QVBoxLayout *l = new QVBoxLayout(innerWidget);
-    l->setSpacing(5);
+    resize(sizeHint());
+    item->setSizeHint(sizeHint());
+    qDebug() << "MI Post: " << sizeHint() << item->sizeHint();
+}
 
-    textLabel = new QLabel(text);
-    //textLabel->setStyleSheet(QString("color:white;"));
-    textLabel->setWordWrap(true);
-    textLabel->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+void MessageItem::catchResized(QSize) {
+    this->resize(sizeHint());
+    item->setSizeHint(sizeHint());
+}
 
-    timestampLabel= new QLabel(timestamp);
-    //timestampLabel->setStyleSheet(QString("color:white;"));
-    timestampLabel->setWordWrap(true);
+void MessageItem::resizeEvent(QResizeEvent *) {
+//    qDebug() << "MI Resize: " << this->size();
+}
 
-    l->addWidget(textLabel);
-    l->addWidget(timestampLabel, 0, Qt::AlignRight);
+QSize MessageItem::sizeHint() const {
+    QSize size;
+    size.setHeight(messageContainer->sizeHint().height() + 2*padding);
+    size.setWidth(this->width());
+    return size;
 }

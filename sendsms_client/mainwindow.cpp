@@ -141,7 +141,8 @@ MainWindow::MainWindow()
     w->connect(client, SIGNAL(connectSuccess()), this, SLOT(reconnectSuccess()));
 
     setWindowTitle(tr("GracefulSMS"));
-    resize(800,400);
+    resize(1000,500);
+//    statusBar->setSizeGripEnabled(false);
     this->setMinimumSize(500, 300);
 }
 

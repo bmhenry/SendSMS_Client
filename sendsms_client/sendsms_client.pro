@@ -11,6 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = GracefulSMS
 TEMPLATE = app
 
+CONFIG += c++11
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -25,8 +26,9 @@ SOURCES += main.cpp\
     sms.cpp \
     listener.cpp \
     notification.cpp \
-    server.cpp \
-    client.cpp
+    client.cpp \
+    textdisplay.cpp \
+    messagetextcontainer.cpp
 
 HEADERS  += mainwindow.h \
     titlebar.h \
@@ -40,8 +42,9 @@ HEADERS  += mainwindow.h \
     sms.h \
     listener.h \
     notification.h \
-    server.h \
-    client.h
+    client.h \
+    textdisplay.h \
+    messagetextcontainer.h
 
 FORMS    +=
 
